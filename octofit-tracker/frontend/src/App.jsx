@@ -1,122 +1,92 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { Outlet, Link } from 'react-router-dom';
+import { getApiBaseUrl } from './config/api';
+import './App.css';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const apiUrl = getApiBaseUrl();
+  const isLocalhost = apiUrl.includes('localhost');
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
+    <div className="app">
+      {/* Navigation Bar */}
+      <nav className="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+        <div className="container-fluid">
+          <Link className="navbar-brand" to="/">
+            <span className="fs-5">🏋️ OctoFit Tracker</span>
+          </Link>
+          <button
+            className="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span className="navbar-toggler-icon"></span>
+          </button>
+          <div className="collapse navbar-collapse" id="navbarNav">
+            <ul className="navbar-nav ms-auto">
+              <li className="nav-item">
+                <Link className="nav-link" to="/">
+                  Home
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/users">
+                  Users
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/teams">
+                  Teams
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/activities">
+                  Activities
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/leaderboard">
+                  Leaderboard
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/workouts">
+                  Workouts
+                </Link>
+              </li>
+            </ul>
+          </div>
         </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+      </nav>
 
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
+      {/* API Configuration Banner */}
+      <div className={`alert ${isLocalhost ? 'alert-info' : 'alert-success'} mb-0`}>
+        <div className="container-fluid">
+          <small>
+            <strong>API:</strong> {apiUrl}
+            {isLocalhost && ' (Local Development)'}
+            {!isLocalhost && ' (Codespaces)'}
+          </small>
         </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+      </div>
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+      {/* Page Content */}
+      <main>
+        <Outlet />
+      </main>
+
+      {/* Footer */}
+      <footer className="bg-dark text-light mt-5 py-4">
+        <div className="container-fluid text-center">
+          <p className="mb-1">&copy; 2024 OctoFit Tracker</p>
+          <small>Built with React 19, Vite, and Node.js</small>
+        </div>
+      </footer>
+    </div>
+  );
 }
 
-export default App
+export default App;
